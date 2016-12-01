@@ -13,3 +13,9 @@ hs_err_pid*
 *.iml
 .gradle
 /build
+
+
+/src/main/resources/AppWidgetset.gwt.xml
+/src/main/webapp/VAADIN/themes/valo/
+/src/main/webapp/VAADIN/widgetsets
+/src/main/webapp/VAADIN/themes/hackathon/styles.css

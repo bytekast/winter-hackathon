@@ -1,10 +1,12 @@
 buildscript {
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath 'org.springframework.boot:spring-boot-gradle-plugin:1.4.1.RELEASE'
-    }
+  repositories {
+    mavenCentral()
+    maven { url "https://plugins.gradle.org/m2/" }
+  }
+  dependencies {
+    classpath 'org.springframework.boot:spring-boot-gradle-plugin:1.4.1.RELEASE'
+    classpath "fi.jasoft.plugin:gradle-vaadin-plugin:0.11.4"
+  }
 }
 
 apply plugin: 'groovy'
@@ -12,46 +14,59 @@ apply plugin: 'eclipse'
 apply plugin: 'idea'
 apply plugin: 'spring-boot'
 apply plugin: 'jacoco'
+apply plugin: 'fi.jasoft.plugin.vaadin'
 
 jar {
-    baseName = 'winter-hackathon'
-    version = '0.1.0'
+  baseName = 'winter-hackathon'
+  version = '0.1.0'
 }
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 repositories {
-    mavenCentral()
+  mavenCentral()
+  maven {
+    url 'http://maven.vaadin.com/vaadin-addons'
+  }
 }
 
 dependencies {
-    compile 'org.codehaus.groovy:groovy-all:2.4.7'
-    compile 'org.springframework.boot:spring-boot-starter-web'
-    compile 'org.springframework.boot:spring-boot-starter-actuator'
+  compile 'org.codehaus.groovy:groovy-all:2.4.7'
+  compile 'org.springframework.boot:spring-boot-starter-web'
+  compile 'org.springframework.boot:spring-boot-starter-actuator'
+  compile 'org.springframework.boot:spring-boot-devtools'
 
-    compile 'com.vaadin:vaadin-spring-boot-starter:1.0.2'
-    compile 'com.vaadin:vaadin-push:7.7.3'
+  compile 'com.vaadin:vaadin-spring-boot-starter:1.1.1'
+  compile 'com.vaadin:vaadin-push:7.7.3'
+  compile 'net.logstash.logback:logstash-logback-encoder:4.7'
 
-    compile 'net.logstash.logback:logstash-logback-encoder:4.7'
+  compile 'org.vaadin.addons:vaadin-sliderpanel:1.4.2'
 
-    testCompile 'org.springframework.boot:spring-boot-starter-test'
-    testCompile 'junit:junit'
+  testCompile 'org.springframework.boot:spring-boot-starter-test'
+  testCompile 'junit:junit'
 }
 
 test {
-    testLogging {
-        events "passed", "skipped", "failed"
-    }
+  testLogging {
+    events "passed", "skipped", "failed"
+  }
 }
 
 jacocoTestReport {
-    dependsOn tasks.test
+  dependsOn tasks.test
 
-    reports {
-        xml.enabled = true // coveralls plugin depends on xml format report
-        html.enabled = true
-    }
+  reports {
+    xml.enabled = true // coveralls plugin depends on xml format report
+    html.enabled = true
+  }
 }
+
+springBoot {  
+    mainClass = 'com.bytekast.hackathon.api.MainController'
+}
+
+// Configure bootRun to ensure the widgetset and theme is compiled
+bootRun.dependsOn 'vaadinCompile', 'vaadinThemeCompile'
 
 build.dependsOn jacocoTestReport

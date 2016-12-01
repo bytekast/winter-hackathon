@@ -1,0 +1,24 @@
+@import "../valo/valo.scss";
+@import "../valo/addons.scss";
+
+@include valo;
+@include addons;
+
+.v-app {
+  background-image: url('http://tendril-website.s3.amazonaws.com/video/EI_Banner.jpg');
+}
+
+.tendril-logo {
+  display: inline;
+  vertical-align: middle;
+  width: 75px;
+  height: 75px;
+}
+
+h2, .v-label-h2 {
+  color: white;
+  font-weight: bold;
+  display: inline;
+  margin-left: 15px;
+  vertical-align: middle;
+}
